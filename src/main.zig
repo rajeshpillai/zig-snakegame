@@ -32,7 +32,7 @@ var snake_position: [SNAKE_LENGTH]rl.Vector2 = undefined;
 var allow_move: bool = false;
 var offset = rl.Vector2.init(0, 0);
 
-var counter_tail: i32 = 0;
+var counter_tail: u32 = 0;
 
 fn update_game() void {
     if (!game_over) {
@@ -96,8 +96,6 @@ fn update_game() void {
                 var i: u32 = 0;
                 while (i < counter_tail) : (i += 1) {
                     while ((fruit.position.x == snake[i].position.x) and (fruit.position.y == snake[i].position.y)) {
-                        // fruit.position = rl.Vector2.init(rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.x / 2, rl.getRandomValue(0, (SCREEN_HEIGHT / SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.y / 2);
-
                         fx = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
                         fy = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
 
@@ -110,6 +108,21 @@ fn update_game() void {
         }
         const pause_text = if (pause) "PAUSED" else "RESUMED";
         rl.drawText(pause_text, 10, 10, 32, rl.Color.yellow);
+
+        if ((snake[0].position.x < (fruit.position.x + fruit.size.x) and (snake[0].position.x + snake[0].size.x) > fruit.position.x) and
+            (snake[0].position.y < (fruit.position.y + fruit.size.y) and (snake[0].position.y + snake[0].size.y) > fruit.position.y))
+        {
+            snake[counter_tail].position = snake_position[counter_tail - 1];
+            counter_tail += 1;
+            fruit.active = false;
+        }
+
+        frames_counter += 1;
+    } else {
+        if (rl.isKeyPressed(rl.KeyboardKey.key_enter)) {
+            //init_game();
+            game_over = false;
+        }
     }
 }
 
