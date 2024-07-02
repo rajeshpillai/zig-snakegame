@@ -1,5 +1,5 @@
 # Zig + RayLib
-A simple pong game
+A simple classic snake game
 
 # References
 - https://github.com/Not-Nik/raylib-zig/tree/devel
