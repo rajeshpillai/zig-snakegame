@@ -34,6 +34,35 @@ var offset = rl.Vector2.init(0, 0);
 
 var counter_tail: u32 = 0;
 
+fn init_game() void {
+    frames_counter = 0;
+    game_over = false;
+    pause = false;
+
+    counter_tail = 1;
+    allow_move = false;
+
+    offset.x = SCREEN_WIDTH % SQUARE_SIZE;
+    offset.y = SCREEN_HEIGHT % SQUARE_SIZE;
+
+    var i: u32 = 0;
+    while (i < SNAKE_LENGTH) : (i += 1) {
+        snake[i].position = rl.Vector2.init(offset.x / 2, offset.y / 2);
+        snake[i].size = rl.Vector2.init(SQUARE_SIZE, SQUARE_SIZE);
+        snake[i].speed = rl.Vector2.init(SQUARE_SIZE, 0);
+        snake[i].color = if (i == 0) rl.Color.dark_blue else rl.Color.blue;
+    }
+
+    i = 0;
+    while (i < SNAKE_LENGTH) : (i += 1) {
+        snake_position[i] = rl.Vector2.init(0.0, 0.0);
+    }
+
+    fruit.size = rl.Vector2.init(SQUARE_SIZE, SQUARE_SIZE);
+    fruit.color = rl.Color.sky_blue;
+    fruit.active = false;
+}
+
 fn update_game() void {
     if (!game_over) {
         if (rl.isKeyPressed(rl.KeyboardKey.key_p)) pause = !pause;
@@ -120,7 +149,7 @@ fn update_game() void {
         frames_counter += 1;
     } else {
         if (rl.isKeyPressed(rl.KeyboardKey.key_enter)) {
-            //init_game();
+            init_game();
             game_over = false;
         }
     }
