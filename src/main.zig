@@ -26,11 +26,11 @@ var frames_counter: i32 = 0;
 var game_over: bool = false;
 var pause: bool = false;
 
-var fruit = Food{};
+var fruit: Food = undefined;
 var snake: [SNAKE_LENGTH]Snake = undefined;
 var snake_position: [SNAKE_LENGTH]rl.Vector2 = undefined;
 var allow_move: bool = false;
-var offset = rl.Vector2{};
+var offset = rl.Vector2.init(0, 0);
 
 var counter_tail: i32 = 0;
 
@@ -69,6 +69,41 @@ fn update_game() void {
                         allow_move = true;
                     } else {
                         snake[i].position = snake_position[i - 1];
+                    }
+                }
+            }
+            if ((snake[0].position.x > (SCREEN_WIDTH - offset.x)) or
+                (snake[0].position.y > (SCREEN_HEIGHT - offset.y)) or
+                (snake[0].position.x < 0) or (snake[0].position.y < 0))
+            {
+                game_over = true;
+            }
+
+            var k: u32 = 0;
+            while (k < counter_tail) : (k += 1) {
+                if ((snake[0].position.x == snake[k].position.x) and (snake[0].position.y == snake[k].position.y)) {
+                    game_over = true;
+                }
+            }
+            if (!fruit.active) {
+                fruit.active = true;
+
+                var fx: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
+                var fy: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
+
+                fruit.position = rl.Vector2.init(@as(f32, @floatFromInt(fx)), @as(f32, @floatFromInt(fy)));
+
+                var i: u32 = 0;
+                while (i < counter_tail) : (i += 1) {
+                    while ((fruit.position.x == snake[i].position.x) and (fruit.position.y == snake[i].position.y)) {
+                        // fruit.position = rl.Vector2.init(rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.x / 2, rl.getRandomValue(0, (SCREEN_HEIGHT / SQUARE_SIZE) - 1) * SQUARE_SIZE + offset.y / 2);
+
+                        fx = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
+                        fy = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
+
+                        fruit.position = rl.Vector2.init(@as(f32, @floatFromInt(fx)), @as(f32, @floatFromInt(fy)));
+
+                        i = 0;
                     }
                 }
             }
