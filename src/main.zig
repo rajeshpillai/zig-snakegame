@@ -101,6 +101,8 @@ fn update_game() void {
                     }
                 }
             }
+
+            // Wall collision
             if ((snake[0].position.x > (SCREEN_WIDTH - offset.x)) or
                 (snake[0].position.y > (SCREEN_HEIGHT - offset.y)) or
                 (snake[0].position.x < 0) or (snake[0].position.y < 0))
@@ -108,12 +110,15 @@ fn update_game() void {
                 game_over = true;
             }
 
+            // Collision with self
             var k: u32 = 0;
             while (k < counter_tail) : (k += 1) {
                 if ((snake[0].position.x == snake[k].position.x) and (snake[0].position.y == snake[k].position.y)) {
-                    game_over = true;
+                    // game_over = true;
                 }
             }
+
+            // Fruit position calculation
             if (!fruit.active) {
                 fruit.active = true;
 
@@ -121,7 +126,9 @@ fn update_game() void {
                 var fy: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
 
                 fruit.position = rl.Vector2.init(@as(f32, @floatFromInt(fx)), @as(f32, @floatFromInt(fy)));
-
+               
+                //rl.drawText(rl.textFormat("FOOD %4i", .{fx}), 150, 10, 32, rl.Color.red);
+                
                 var i: u32 = 0;
                 while (i < counter_tail) : (i += 1) {
                     while ((fruit.position.x == snake[i].position.x) and (fruit.position.y == snake[i].position.y)) {
@@ -165,10 +172,9 @@ fn draw_game() void {
 
     // fx = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
     if (!game_over) {
-        while (i < SCREEN_WIDTH / SQUARE_SIZE + 1) : (i += 1) {
-            // incompatible types: 'u32' and 'f32'
-            //rl.drawLineV(rl.Vector2.init(SQUARE_SIZE * i + @as(i32, @intFromFloat(offset.x / 2)), @as(i32, @intFromFloat(offset.y / 2))), rl.Vector2.init(SQUARE_SIZE * i + @as(i32, @intFromFloat(offset.x / 2)), SCREEN_HEIGHT - @as(i32, @intFromFloat(offset.y / 2))), rl.Color.light_gray);
 
+        // Draw grid lines
+        while (i < SCREEN_WIDTH / SQUARE_SIZE + 1) : (i += 1) {
             rl.drawLineV(rl.Vector2.init(SQUARE_SIZE * i + offset.x / 2, offset.y / 2), rl.Vector2.init(SQUARE_SIZE * i + offset.x / 2, SCREEN_HEIGHT - offset.y / 2), rl.Color.light_gray);
         }
 
@@ -177,12 +183,14 @@ fn draw_game() void {
             rl.drawLineV(rl.Vector2.init(offset.x / 2, SQUARE_SIZE * i + offset.y / 2), rl.Vector2.init(SCREEN_WIDTH - offset.x / 2, SQUARE_SIZE * i + offset.y / 2), rl.Color.light_gray);
         }
 
+        // Draw Snake
         i = 0;
         while (i < @as(f32,@floatFromInt(counter_tail))) : (i += 1) {
             const j:u32 = @as(u32,@intFromFloat(i));
             rl.drawRectangleV(snake[j].position, snake[j].size, snake[j].color);
         }
 
+        // Draw fruit
         rl.drawRectangleV(fruit.position, fruit.size, fruit.color);
 
         if (pause) {
