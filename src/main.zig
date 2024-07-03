@@ -122,8 +122,11 @@ fn update_game() void {
             if (!fruit.active) {
                 fruit.active = true;
 
-                var fx: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
-                var fy: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
+                var fx: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * 
+                               @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
+                
+                var fy: i32 = rl.getRandomValue(0, (SCREEN_HEIGHT / SQUARE_SIZE) - 1)  * 
+                              @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
 
                 fruit.position = rl.Vector2.init(@as(f32, @floatFromInt(fx)), @as(f32, @floatFromInt(fy)));
                
