@@ -205,9 +205,6 @@ pub fn main() anyerror!void {
     // Main game loop
     rl.setTargetFPS(60);
     while (!rl.windowShouldClose()) {
-        rl.beginDrawing();
-        defer rl.endDrawing();
-        rl.clearBackground(rl.Color.black);
         update_draw_frame();
     }
 }
