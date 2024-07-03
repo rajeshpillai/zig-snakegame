@@ -201,7 +201,7 @@ fn update_draw_frame() void {
 pub fn main() anyerror!void {
     rl.initWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Class gmae: snake");
     defer rl.closeWindow();
-
+    init_game();
     // Main game loop
     rl.setTargetFPS(60);
     while (!rl.windowShouldClose()) {
