@@ -155,7 +155,43 @@ fn update_game() void {
     }
 }
 
-fn draw_game() void {}
+fn draw_game() void {
+    rl.beginDrawing();
+    defer rl.endDrawing();
+
+    rl.clearBackground(rl.Color.ray_white);
+
+    var i: f32 = 0;
+
+    // fx = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
+    if (!game_over) {
+        while (i < SCREEN_WIDTH / SQUARE_SIZE + 1) : (i += 1) {
+            // incompatible types: 'u32' and 'f32'
+            //rl.drawLineV(rl.Vector2.init(SQUARE_SIZE * i + @as(i32, @intFromFloat(offset.x / 2)), @as(i32, @intFromFloat(offset.y / 2))), rl.Vector2.init(SQUARE_SIZE * i + @as(i32, @intFromFloat(offset.x / 2)), SCREEN_HEIGHT - @as(i32, @intFromFloat(offset.y / 2))), rl.Color.light_gray);
+
+            rl.drawLineV(rl.Vector2.init(SQUARE_SIZE * i + offset.x / 2, offset.y / 2), rl.Vector2.init(SQUARE_SIZE * i + offset.x / 2, SCREEN_HEIGHT - offset.y / 2), rl.Color.light_gray);
+        }
+
+        i = 0;
+        while (i < SCREEN_HEIGHT / SQUARE_SIZE + 1) : (i += 1) {
+            rl.drawLineV(rl.Vector2.init(offset.x / 2, SQUARE_SIZE * i + offset.y / 2), rl.Vector2.init(SCREEN_WIDTH - offset.x / 2, SQUARE_SIZE * i + offset.y / 2), rl.Color.light_gray);
+        }
+
+        i = 0;
+        while (i < @as(f32,@floatFromInt(counter_tail))) : (i += 1) {
+            const j:u32 = @as(u32,@intFromFloat(i));
+            rl.drawRectangleV(snake[j].position, snake[j].size, snake[j].color);
+        }
+
+        rl.drawRectangleV(fruit.position, fruit.size, fruit.color);
+
+        if (pause) {
+            rl.drawText("GAME PAUSED", SCREEN_WIDTH / 2 - @divTrunc(rl.measureText("GAME PAUSED", 40),2), SCREEN_HEIGHT / 2 - 40, 40, rl.Color.gray);
+        }
+    } else {
+        rl.drawText("PRESS [ENTER] TO PLAY AGAIN", @divTrunc(rl.getScreenWidth(),2) - @divTrunc(rl.measureText("PRESS [ENTER] TO PLAY AGAIN", 20),2), @divTrunc(rl.getScreenHeight(),2) - 50, 20, rl.Color.gray);
+    }
+}
 
 fn update_draw_frame() void {
     update_game();
