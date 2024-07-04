@@ -122,16 +122,16 @@ fn update_game() void {
             if (!fruit.active) {
                 fruit.active = true;
 
-                var fx: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) * 
-                               @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
-                
-                var fy: i32 = rl.getRandomValue(0, (SCREEN_HEIGHT / SQUARE_SIZE) - 1)  * 
-                              @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
+                var fx: i32 = rl.getRandomValue(0, (SCREEN_WIDTH / SQUARE_SIZE) - 1) *
+                    @as(i32, @intFromFloat(SQUARE_SIZE + offset.x / 2));
+
+                var fy: i32 = rl.getRandomValue(0, (SCREEN_HEIGHT / SQUARE_SIZE) - 1) *
+                    @as(i32, @intFromFloat(SQUARE_SIZE + offset.y / 2));
 
                 fruit.position = rl.Vector2.init(@as(f32, @floatFromInt(fx)), @as(f32, @floatFromInt(fy)));
-               
+
                 //rl.drawText(rl.textFormat("FOOD %4i", .{fx}), 150, 10, 32, rl.Color.red);
-                
+
                 var i: u32 = 0;
                 while (i < counter_tail) : (i += 1) {
                     while ((fruit.position.x == snake[i].position.x) and (fruit.position.y == snake[i].position.y)) {
@@ -148,9 +148,7 @@ fn update_game() void {
         const pause_text = if (pause) "PAUSED" else "RESUMED";
         rl.drawText(pause_text, 10, 10, 32, rl.Color.yellow);
 
-        if ((snake[0].position.x < (fruit.position.x + fruit.size.x) and (snake[0].position.x + snake[0].size.x) > fruit.position.x) and
-            (snake[0].position.y < (fruit.position.y + fruit.size.y) and (snake[0].position.y + snake[0].size.y) > fruit.position.y))
-        {
+        if ((snake[0].position.x < (fruit.position.x + fruit.size.x) and (snake[0].position.x + snake[0].size.x) > fruit.position.x) and (snake[0].position.y < (fruit.position.y + fruit.size.y) and (snake[0].position.y + snake[0].size.y) > fruit.position.y)) {
             snake[counter_tail].position = snake_position[counter_tail - 1];
             counter_tail += 1;
             fruit.active = false;
@@ -188,8 +186,8 @@ fn draw_game() void {
 
         // Draw Snake
         i = 0;
-        while (i < @as(f32,@floatFromInt(counter_tail))) : (i += 1) {
-            const j:u32 = @as(u32,@intFromFloat(i));
+        while (i < @as(f32, @floatFromInt(counter_tail))) : (i += 1) {
+            const j: u32 = @as(u32, @intFromFloat(i));
             rl.drawRectangleV(snake[j].position, snake[j].size, snake[j].color);
         }
 
@@ -197,10 +195,10 @@ fn draw_game() void {
         rl.drawRectangleV(fruit.position, fruit.size, fruit.color);
 
         if (pause) {
-            rl.drawText("GAME PAUSED", SCREEN_WIDTH / 2 - @divTrunc(rl.measureText("GAME PAUSED", 40),2), SCREEN_HEIGHT / 2 - 40, 40, rl.Color.gray);
+            rl.drawText("GAME PAUSED", SCREEN_WIDTH / 2 - @divTrunc(rl.measureText("GAME PAUSED", 40), 2), SCREEN_HEIGHT / 2 - 40, 40, rl.Color.gray);
         }
     } else {
-        rl.drawText("PRESS [ENTER] TO PLAY AGAIN", @divTrunc(rl.getScreenWidth(),2) - @divTrunc(rl.measureText("PRESS [ENTER] TO PLAY AGAIN", 20),2), @divTrunc(rl.getScreenHeight(),2) - 50, 20, rl.Color.gray);
+        rl.drawText("PRESS [ENTER] TO PLAY AGAIN", @divTrunc(rl.getScreenWidth(), 2) - @divTrunc(rl.measureText("PRESS [ENTER] TO PLAY AGAIN", 20), 2), @divTrunc(rl.getScreenHeight(), 2) - 50, 20, rl.Color.gray);
     }
 }
 
